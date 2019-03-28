@@ -21,11 +21,11 @@ class Timetable:
         return grouped
 
     def get_timetable_grouped_by_teacher(self):
-        return self.__get_grouped_by__(lambda x: x.get_teacher())
+        return self.__get_grouped_by__(lambda x: x.teacher)
 
     def get_timetable_grouped_by_room(self):
-        return self.__get_grouped_by__(lambda x: x.get_room())
+        return self.__get_grouped_by__(lambda x: x.room)
 
     def get_timetable_grouped_by_form(self):
-        return self.__get_grouped_by__(lambda x: x.get_form())
+        return self.__get_grouped_by__(lambda x: x.form)
 

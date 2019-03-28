@@ -17,8 +17,8 @@ def create_individual(program_classes):
     individual = []
 
     for gen in program_classes:
-        for _ in range(gen.get_amount_per_week()):
-            room = random.choice(gen.get_possible_rooms())
+        for _ in range(gen.amount_per_week):
+            room = random.choice(gen.possible_rooms)
             t = list(DataBank().get_data("TimePeriod").values())
             time = random.choice(t)
             individual.append((time, gen, room))
@@ -43,6 +43,9 @@ def eval_timetable(individual):
 
     f_start = 0
 
+    complexity = 0
+    COMPLEXITY_STAND = 5
+
     def prepare(obj, all_list):
         conflict = 0
 
@@ -59,10 +62,10 @@ def eval_timetable(individual):
     for gene in individual:
         time = gene[0]
         room = gene[2]
-        teacher = gene[1].get_teacher()
-        form = gene[1].get_form()
-        day = time.get_day_of_week()
-        window_number = time.get_number()
+        teacher = gene[1].teacher
+        form = gene[1].form
+        day = time.day_of_week
+        window_number = time.number
 
         r_conflict += prepare(room, rooms)
         f_conflict += prepare(form, forms)
@@ -72,9 +75,6 @@ def eval_timetable(individual):
         for day in form.values():
             f_window += (max(day) - min(day) + 1) - len(day)
             f_start += min(day) - 1
-
-    if (t_conflict, r_conflict, f_conflict, f_window, f_start) == (0.0, 0.0, 0.0, 0.0, 0.0, 0.0):
-        print("WOW")
 
     return t_conflict + r_conflict + f_conflict + f_window + f_start,
     #return t_conflict, r_conflict, f_conflict, f_window, f_start
@@ -126,7 +126,7 @@ def cx_gene(gene1, gene2):
 
 def mut_gene(gene):
     program_class = gene[1]
-    room = random.choice(program_class.get_possible_rooms())
+    room = random.choice(program_class.possible_rooms)
     t = list(DataBank().get_data("TimePeriod").values())
     time = random.choice(t)
     return time, gene[1], room
@@ -159,11 +159,11 @@ def write1(l, n):
 
         for a in l:
             time = a[0]
-            form = a[1].get_form()
+            form = a[1].form
             room = a[2]
             if form not in t:
                 t[form] = [[], [], [], [], [], []]
-            t[form][time.get_day_of_week()].append((time.get_number(), a[1].get_subject(), room, a[1].get_teacher()))
+            t[form][time.day_of_week].append((time.number, a[1].subject, room, a[1].teacher))
 
         forms = t.keys()
 
@@ -191,11 +191,11 @@ def write(l, n):
         for a in l[n]:
             file_object.write(str(a[0]))
             file_object.write("\n")
-            file_object.write(str(a[1].get_teacher()))
+            file_object.write(str(a[1].teacher))
             file_object.write("\n")
-            file_object.write(str(a[1].get_form()))
+            file_object.write(str(a[1].form))
             file_object.write("\n")
-            file_object.write(str(a[1].get_subject()))
+            file_object.write(str(a[1].subject))
             file_object.write("\n")
             file_object.write(str(a[2]))
             file_object.write("************\n")

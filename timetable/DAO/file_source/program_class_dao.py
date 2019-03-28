@@ -18,6 +18,7 @@ class ProgramClassDAO(DAOInterface):
     __SUBJECT__ = 2
     __AMOUNT_PER_WEEK__ = 3
     __TEACHER_ID__ = 4
+    __COMPLEXITY__ = 5
 
     def select_all(self):
 
@@ -33,16 +34,17 @@ class ProgramClassDAO(DAOInterface):
                 teacher = db.get_data_item("Teacher", sl[self.__TEACHER_ID__])
                 subject = db.get_data_item("Subject", sl[self.__SUBJECT__])
                 form = db.get_data_item("Form", sl[self.__FORM_NUMBER__] + sl[self.__FORM_LETTER__])
+                complexity = sl[self.__COMPLEXITY__]
                 rooms = []
 
-                for r in sl[self.__TEACHER_ID__ + 1:]:
+                for r in sl[self.__COMPLEXITY__ + 1:]:
                     room = db.get_data_item("Room", r)
                     rooms.append(room)
 
                 if len(rooms) == 0:
                     rooms = list(db.get_data("Room").values())
 
-                program_class = ProgramClass(teacher, subject, form, int(sl[self.__AMOUNT_PER_WEEK__]), rooms)
+                program_class = ProgramClass(teacher, subject, form, int(sl[self.__AMOUNT_PER_WEEK__]), int(complexity), rooms)
 
                 key = " ".join(str(i) for i in sl[:self.__AMOUNT_PER_WEEK__]) + " " + sl[self.__TEACHER_ID__]
                 program[key] = program_class
