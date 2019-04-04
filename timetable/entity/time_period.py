@@ -1,9 +1,17 @@
 class TimePeriod:
 
-    def __init__(self, day_of_week, number, time_duration=""):
-        self.day_of_week = day_of_week
+    """
+    TimePeriod is used for possible time of studying periods per work day
+    """
+
+    def __init__(self, number: int, description: str):
+        """
+
+        :param number: Number of time period in a work day
+        :param description: Time period like people understand it
+        """
         self.number = number
-        self.time_duration = time_duration
+        self.description = description
 
     def str(self):
-        return str(self.day_of_week) + " " + str(self.number) + " " + self.time_duration
+        return str(self.number) + " " + self.description
