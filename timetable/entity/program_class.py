@@ -1,6 +1,6 @@
 class ProgramClass:
     """
-    ProgramClass is used for type of class which is in a programm
+    ProgramClass is used for type of class which is in a program
     """
 
     def __init__(self, teacher, subject, form, amount_per_week: int, grouped_amount: int, room_amount: int,

@@ -12,6 +12,15 @@ class TimePeriod:
         """
         self.number = number
         self.description = description
+        self.next = None
+        self.prev = None
 
     def str(self):
         return str(self.number) + " " + self.description
+
+    def __le__(self, other):
+        return self.number <= other.number
+
+    def __gt__(self, other):
+        return self.number > other.number
+

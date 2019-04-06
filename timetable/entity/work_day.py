@@ -16,3 +16,9 @@ class WorkDay:
 
     def __str__(self) -> str:
         return str(self.number) + " " + self.description
+
+    def __le__(self, other):
+        return self.number <= other.number
+
+    def __gt__(self, other):
+        return self.number > other.number
