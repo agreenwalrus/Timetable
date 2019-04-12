@@ -1,12 +1,7 @@
-from timetable.DAO.dao_interface import DAOInterface
+from timetable.DAO import DAOInterface
 
-from timetable.entity.form import Form
 from timetable.entity.program_class import ProgramClass
-from timetable.entity.room import Room
-from timetable.entity.subject import Subject
-from timetable.entity.teacher import Teacher
-from timetable.entity.time_period import TimePeriod
-from timetable.service.data_bank import DataBank
+from timetable.service import DataBank
 
 
 

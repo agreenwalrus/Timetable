@@ -1,5 +1,4 @@
 import random
-from operator import attrgetter
 
 import numpy
 from deap import algorithms
@@ -7,16 +6,14 @@ from deap import base
 from deap import creator
 from deap import tools
 
-from timetable.DAO.file_source.dao_factory import DAOFactory
 from timetable.entity.form import Form
 from timetable.entity.program_class import ProgramClass
 from timetable.entity.room import Room
-from timetable.entity.subject import Subject
+from timetable import Subject
 from timetable.entity.teacher import Teacher
 from timetable.entity.time_period import TimePeriod
-from timetable.entity.work_day import WorkDay
-from timetable.service.data_bank import DataBank
-from timetable.service.data_bank_filler import DataBankFiller
+from timetable import WorkDay
+
 
 def create_individual(program_classes, all_days, all_periods):
 
@@ -111,9 +108,11 @@ def eval_timetable(individual):
             t_conflict += prepare(t, teachers)
 
     for form_key in forms.keys():
-        for w_day in forms[form_key].values():
+        for w_day_number, w_day in forms[form_key].items():
             t_period = w_day[0]
-            f_over_complexity = sum([com[2] if com[2] > 0 else 0 for form in forms.values() for com in form.values()])
+            f_over_complexity += sum([com[2] - form_key.daily_complexity[w_day_number]
+                                     if com[2] - form_key.daily_complexity[w_day_number] > 0
+                                     else 0 for form in forms.values() for com in form.values()])
             f_window += (max(t_period) - min(t_period) + 1) - len(t_period)
             f_start += min(t_period) - form_key.class_start
 
@@ -250,7 +249,7 @@ def main():
 
     init()
 
-    NGEN = 10
+    NGEN = 100
     MU = 50
     LAMBDA = 100
     CXPB = 0.3
@@ -276,11 +275,6 @@ def main():
 
 if __name__ == '__main__':
 
-    form = [Form(class_start=1, people_amount=20, number=5, letter='a', daily_complexity=20, max_complexity=3),
-            Form(class_start=1, people_amount=20, number=6, letter='a', daily_complexity=20, max_complexity=3),
-            Form(class_start=1, people_amount=20, number=7, letter='a', daily_complexity=20, max_complexity=3),
-            Form(class_start=1, people_amount=20, number=8, letter='a', daily_complexity=20, max_complexity=3)]
-
     subject = [Subject(name='Math', short_name='Math'), Subject(name='Phycology', short_name='Phyc'),
                Subject(name='Russian', short_name='Rus'), Subject(name='History', short_name='Hist'),
                Subject(name='Phisics', short_name='Phi'), Subject(name='Music', short_name='Music')]
@@ -301,6 +295,18 @@ if __name__ == '__main__':
     day = [WorkDay(number=1, description='Monday'), WorkDay(number=2, description='Monday'),
            WorkDay(number=3, description='Monday'), WorkDay(number=4, description='Monday'),
            WorkDay(number=5, description='Monday'), WorkDay(number=6, description='Monday')]
+
+    daily_complexity = {1: 4,
+                        2: 8,
+                        3: 9,
+                        4: 9,
+                        5: 5,
+                        6: 0}
+
+    form = [Form(class_start=1, people_amount=20, number=5, letter='a', daily_complexity=daily_complexity, max_complexity=3),
+            Form(class_start=1, people_amount=20, number=6, letter='a', daily_complexity=daily_complexity, max_complexity=3),
+            Form(class_start=1, people_amount=20, number=7, letter='a', daily_complexity=daily_complexity, max_complexity=3),
+            Form(class_start=1, people_amount=20, number=8, letter='a', daily_complexity=daily_complexity, max_complexity=3)]
 
     time = [TimePeriod(number=1, description='08:00 - 8:45'), TimePeriod(number=2, description='08:00 - 8:45'),
             TimePeriod(number=3, description='08:00 - 8:45'), TimePeriod(number=4, description='08:00 - 8:45'),

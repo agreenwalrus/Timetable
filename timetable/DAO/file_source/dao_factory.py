@@ -1,10 +1,10 @@
-from timetable.DAO.dao_factory_interface import DAOFactoryInterface
-from timetable.DAO.file_source.form_dao import FormDAO
-from timetable.DAO.file_source.program_class_dao import ProgramClassDAO
-from timetable.DAO.file_source.room_dao import RoomDAO
-from timetable.DAO.file_source.subject_dao import SubjectDAO
-from timetable.DAO.file_source.teacher_dao import TeacherDAO
-from timetable.DAO.file_source.time_period_dao import TimePeriodDAO
+from timetable.DAO import DAOFactoryInterface
+from timetable.DAO import FormDAO
+from timetable.DAO import ProgramClassDAO
+from timetable.DAO import RoomDAO
+from timetable.DAO import SubjectDAO
+from timetable.DAO import TeacherDAO
+from timetable.DAO import TimePeriodDAO
 
 
 class DAOFactory(DAOFactoryInterface):

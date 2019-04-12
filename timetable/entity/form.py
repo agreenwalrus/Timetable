@@ -21,6 +21,7 @@ class Form:
         # for first and last class per day
         self.max_complexity = max_complexity
         self.class_start = class_start
+        self.daily_complexity = daily_complexity
 
     def str(self) -> str:
         return str(self.number) + " " + self.letter + " " + str(self.people_amount) + " " + str(self.max_complexity) \

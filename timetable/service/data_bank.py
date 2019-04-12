@@ -1,4 +1,4 @@
-from timetable.interfaces.singleton import Singleton
+from timetable.interfaces import Singleton
 
 
 class DataBank(metaclass=Singleton):

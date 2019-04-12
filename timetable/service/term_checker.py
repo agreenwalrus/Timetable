@@ -1,7 +1,5 @@
 import numpy as np
 
-from timetable.interfaces.singleton import Singleton
-
 
 class TermChecker:
 

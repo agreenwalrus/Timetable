@@ -1,4 +1,4 @@
-from timetable.DAO.dao_interface import DAOInterface
+from timetable.DAO import DAOInterface
 from timetable.entity.teacher import Teacher
 
 

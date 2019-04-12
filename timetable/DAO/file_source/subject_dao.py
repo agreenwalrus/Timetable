@@ -1,6 +1,5 @@
-from timetable.DAO.dao_interface import DAOInterface
-from timetable.entity.room import Room
-from timetable.entity.subject import Subject
+from timetable.DAO import DAOInterface
+from timetable import Subject
 
 
 class SubjectDAO(DAOInterface):
