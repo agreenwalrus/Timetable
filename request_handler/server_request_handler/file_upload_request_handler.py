@@ -12,7 +12,7 @@ class FileUploadRequestHandler((RequestHandlerInterface)):
     def handle_request(self, socket):
         try:
             file_name, file_size, data = self.parse_params_and_data()
-            file = open(file_name, 'wb+')#('./files_server/' + file_name, 'wb+')
+            file = open('./files_server/' + file_name, 'wb+')
             file_size_remaining = int(file_size)
 
             socket.send(bytes('123', ENCODE)) #sync
@@ -24,6 +24,7 @@ class FileUploadRequestHandler((RequestHandlerInterface)):
                 file_size_remaining -= len(data)
 
             file.close()
+            print("File is uploaded!")
             return OK
         except IOError as e:
             print(str(e))

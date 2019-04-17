@@ -24,7 +24,7 @@ class FileUploadRequestHandler(RequestHandlerInterface):
                     statinfo = os.stat(file_name)
                     file_size_remaining = statinfo.st_size
 
-                    file_name_without_path = file_name.split('/')[-1]
+                    file_name_without_path = file_name.split('\\')[-1]
                     socket.send(
                         ('upload ' + file_name_without_path + ' ' + str(file_size_remaining) + "\r\n").encode(ENCODE))
 
@@ -33,16 +33,16 @@ class FileUploadRequestHandler(RequestHandlerInterface):
                     socket.recv(PACKAGE_SIZE)  # sync
 
                     file_size = file_size_remaining
-                    with progressbar.ProgressBar() as bar:
-                        while file_size_remaining != 0:
-                            if file_size_remaining < pack_size:
-                                pack_size = file_size_remaining
+                    #with progressbar.ProgressBar() as bar:
+                    while file_size_remaining != 0:
+                        if file_size_remaining < pack_size:
+                            pack_size = file_size_remaining
 
-                            data = file.read(pack_size)
-                            socket.send(data)
-                            file_size_remaining -= pack_size
+                        data = file.read(pack_size)
+                        socket.send(data)
+                        file_size_remaining -= pack_size
 
-                            bar.update(int(((file_size - file_size_remaining) / file_size) * 100))
+                    #        bar.update(int(((file_size - file_size_remaining) / file_size) * 100))
                     file.close()
                 except FileNotFoundError:
                     return ERROR, "File is not found!"
