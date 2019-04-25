@@ -33,7 +33,7 @@ def create_individual(program_classes, all_days, all_periods):
 toolbox = base.Toolbox()
 
 
-def eval_timetable(individual):
+def :
     rooms = dict()
     forms = dict()
     teachers = dict()

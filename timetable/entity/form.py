@@ -3,7 +3,7 @@ class Form:
     Form is entity for form in school.
     """
 
-    def __init__(self, number: int, letter: str, people_amount: int, max_complexity: int, daily_complexity, class_start=1):
+    def __init__(self, number_letter: str, people_amount: int, max_complexity: int, daily_complexity, class_start):
         """
         Construct a new 'Form' object.
 
@@ -15,8 +15,7 @@ class Form:
         :param class_start: Fist time period number when classes start per day
 
         """
-        self.number = number
-        self.letter = letter
+        self.number_letter = number_letter
         self.people_amount = people_amount
         # for first and last class per day
         self.max_complexity = max_complexity
@@ -24,7 +23,7 @@ class Form:
         self.daily_complexity = daily_complexity
 
     def str(self) -> str:
-        return str(self.number) + " " + self.letter + " " + str(self.people_amount) + " " + str(self.max_complexity) \
+        return self.number_letter + " " + str(self.people_amount) + " " + str(self.max_complexity) \
                + " " + str(self.class_start)
 
 
