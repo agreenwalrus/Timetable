@@ -1,10 +1,8 @@
-from client.SyncTCPClient.client import SerialTCPSocketClient
-from request_handler_factory.rhf_client.remote_console_request_handler_factory import RemoteConsoleRequestHandlerFactory
+from client.client import SerialTCPSocketClient
+from handler.rhf_client.remote_console_request_handler_factory import RemoteConsoleRequestHandlerFactory
 
 #from sockets.rktp_socket import RKTPSocket
-from socket import *
 #from sockets.tcp_socket import TCPSocket
-from sockets.tcp_socket import TCPSocket
 
 if __name__=='__main__':
     client = SerialTCPSocketClient("127.0.0.1", 37000, RemoteConsoleRequestHandlerFactory())

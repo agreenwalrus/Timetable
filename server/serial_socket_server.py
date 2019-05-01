@@ -1,6 +1,6 @@
 from sockets.tcp_socket import ENCODE, TCPSocket
 import socket
-from request_handler.server_request_handler import server_request_handler_interface
+from handler.server_request_handler import server_request_handler_interface
 from server.server_interface import ServerInterface
 
 

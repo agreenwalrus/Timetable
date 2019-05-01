@@ -1,5 +1,5 @@
 from server.serial_socket_server import SerialTCPSocketServer
-from request_handler_factory.rhf_server.remote_console_request_handler_factory import RemoteConsoleRequestHandlerFactory
+from handler.server_handler.remote_console_request_handler_factory import RemoteConsoleRequestHandlerFactory
 from sockets.tcp_socket import TCPSocket
 from server.pool import pool_interface
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 #         except ValueError:
 #             continue
 #     try:
-#         server = SerialTCPSocketServer(address, port, UDPSocket(), RemoteConsoleRequestHandlerFactory())
+#         server= SerialTCPSocketServer(address, port, UDPSocket(), RemoteConsoleRequestHandlerFactory())
 #         server.start_server()
 #     except ConnectionRefusedError:
 #         print('Connection is refused')
