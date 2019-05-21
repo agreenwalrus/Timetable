@@ -32,15 +32,27 @@ class Connection:
     def cursor(self):
         return self.connection.cursor()
 
+    def commit(self):
+        return self.connection.commit()
+
+    def is_connected(self):
+        return self.connection.is_connected()
+
+    def rollback(self):
+        return self.rollback()
+
 
 def connection_decorator(method):
-    def wrapper(self, **kwargs):
+    def wrapper(self, *kwargs):
         try:
             self.connection.connect()
-            return method(self, **kwargs)
+            return method(self, *kwargs)
+        # except mysql.connector.Error as err:
+        #     self.connection.rollback()  # rollback if any exception occured
+        #     raise err
         finally:
-            self.connection.close()
-
+            if self.connection.is_connected():
+                self.connection.close()
     return wrapper
 
 
@@ -231,7 +243,9 @@ class TimePeriodDAO(AbstractDAO):
 
     @connection_decorator
     def save(self, object):
-        raise NotImplementedError
+        cursor = self.connection.cursor()
+        cursor.execute("INSERT INTO time_period(number, description) VALUES(%s, %s)", (object.number, object.description))
+        self.connection.commit()
 
     @connection_decorator
     def select_all(self):
@@ -245,11 +259,19 @@ class TimePeriodDAO(AbstractDAO):
 
     @connection_decorator
     def select(self, id):
-        raise NotImplementedError
+        l = []
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT number, description FROM time_period WHERE number = %s", (id,))
+        result = cursor.fetchall()
+        for number, description in result:
+            l.append(TimePeriod(number=int(number), description=description))
+        return l
 
     @connection_decorator
-    def delete(self, id):
-        raise NotImplementedError
+    def delete(self, iden):
+        cursor = self.connection.cursor()
+        cursor.execute("DELETE FROM time_period WHERE number = %s", (iden,))
+        self.connection.commit()
 
 
 class TimetableDAO(AbstractDAO):

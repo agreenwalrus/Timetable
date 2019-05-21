@@ -1,5 +1,11 @@
+import sys
+
+from PyQt5 import QtWidgets
+
 from client.client_interface import ClientInterface
 import handler.client_request_handler.client_request_handler_interface as rh
+import handler.client_request_handler.client_request as cr
+from gui.mainwindow import ExampleApp, MainUi
 from sockets.tcp_socket import TCPSocket
 
 
@@ -19,11 +25,14 @@ class SerialTCPSocketClient(ClientInterface):
                 raise ConnectionAbortedError
             print("Connection with ", self.ipv4_addr, ":", self.port, " is established.")
             code = rh.OK
-            while code != rh.STOP_CLIENT:
-                input_line = input()
-                request_handler = self.request_handler_factory.get_request_handler(input_line)
-                code, message = request_handler.handle_request(self.socket)
-                print(message)
+
+            app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication
+            request_handler = self.request_handler_factory.get_request_handler(self.request_handler_factory.SELECT_ALL)
+            code, result = request_handler.handle_request(self.socket)
+            window = MainUi(result)  # Создаём объект класса ExampleApp
+            window.show()  # Показываем окно
+            app.exec_()
+
         except ConnectionAbortedError:
             print("Connection is aborted by server!")
         finally:

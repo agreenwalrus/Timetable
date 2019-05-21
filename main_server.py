@@ -1,7 +1,6 @@
 from server.serial_socket_server import SerialTCPSocketServer
 from handler.server_handler.remote_console_request_handler_factory import RemoteConsoleRequestHandlerFactory
-from sockets.tcp_socket import TCPSocket
-from server.pool import pool_interface
+
 
 if __name__ == '__main__':
     MAX_AMOUNT_OF_CLIENTS = 2

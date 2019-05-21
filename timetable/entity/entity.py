@@ -27,7 +27,7 @@ class Form(Drawable):
         self.class_start = class_start
         self.daily_complexity = daily_complexity
 
-    def str(self) -> str:
+    def __str__(self) -> str:
         return self.number_letter + " " + str(self.people_amount) + " " + str(self.max_complexity) \
                + " " + str(self.class_start)
 
@@ -62,7 +62,7 @@ class ProgramClass(Drawable):
         self.grouped_amount = grouped_amount
         self.room_amount = room_amount
 
-    def str(self):
+    def __str__(self):
         return self.form.number + " " + \
                self.form.letter + " " + \
                self.subject.name + " " + \
@@ -87,7 +87,7 @@ class Room(Drawable):
         self.number = number
         self.capacity = capacity
 
-    def str(self):
+    def __str__(self):
         return str(self.number) + " " + str(self.capacity)
 
     def draw(self):
@@ -105,7 +105,7 @@ class Subject(Drawable):
         self.name = name
         self.short_name = short_name
 
-    def str(self):
+    def __str__(self):
         return self.name + " " + self.short_name
 
     def draw(self):
@@ -128,7 +128,7 @@ class Teacher(Drawable):
         self.impossible_days = impossible_days
         self.middle_name = middle_name
 
-    def str(self):
+    def __str__(self):
         return self.id + " " + self.name + " " + self.surname
 
     def draw(self):
@@ -152,7 +152,7 @@ class TimePeriod(Drawable):
         self.next = None
         self.prev = None
 
-    def str(self):
+    def __str__(self):
         return str(self.number) + " " + self.description
 
     def __le__(self, other):
