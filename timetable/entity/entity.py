@@ -39,9 +39,7 @@ class ProgramClass(Drawable):
     """
     ProgramClass is used for type of class which is in a program
     """
-
-    def __init__(self, teacher, subject, form, amount_per_week: int, grouped_amount: int, room_amount: int,
-                 complexity: int, possible_rooms):
+    def __init__(self):
         """
 
         :param teacher: list of object of Teacher() for this class
@@ -53,14 +51,37 @@ class ProgramClass(Drawable):
         :param complexity: complexity for class
         :param possible_rooms: list of possible rooms for the class
         """
-        self.teacher = teacher
-        self.subject = subject
-        self.form = form
-        self.possible_rooms = possible_rooms
-        self.complexity = complexity
-        self.amount_per_week = amount_per_week
-        self.grouped_amount = grouped_amount
-        self.room_amount = room_amount
+        self.teacher = []
+        self.subject = None
+        self.form = None
+        self.possible_rooms = []
+        self.complexity = None
+        self.amount_per_week = None
+        self.grouped_amount = None
+        self.room_amount = None
+
+
+    # def __init__(self, teacher, subject, form, amount_per_week: int, grouped_amount: int, room_amount: int,
+    #              complexity: int, possible_rooms):
+    #     """
+    #
+    #     :param teacher: list of object of Teacher() for this class
+    #     :param subject: object of Subject()
+    #     :param form: object of Form()
+    #     :param amount_per_week: amount of such kind of class per week
+    #     :param grouped_amount: amount of time_period closed together per day
+    #     :param room_amount: room amount
+    #     :param complexity: complexity for class
+    #     :param possible_rooms: list of possible rooms for the class
+    #     """
+    #     self.teacher = teacher
+    #     self.subject = subject
+    #     self.form = form
+    #     self.possible_rooms = possible_rooms
+    #     self.complexity = complexity
+    #     self.amount_per_week = amount_per_week
+    #     self.grouped_amount = grouped_amount
+    #     self.room_amount = room_amount
 
     def __str__(self):
         return self.form.number + " " + \

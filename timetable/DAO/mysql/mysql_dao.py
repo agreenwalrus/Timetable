@@ -1,6 +1,6 @@
 import mysql.connector
 from timetable.DAO.dao_interface import AbstractDAO
-from timetable.entity.entity import Form
+from timetable.entity.entity import Form, ProgramClass
 from timetable.entity.entity import Room
 from timetable.entity.entity import Subject
 from timetable.entity.entity import Teacher
@@ -180,7 +180,71 @@ class ProgramClassDAO(AbstractDAO):
 
     @connection_decorator
     def select_all(self):
-        raise NotImplementedError
+        l = []
+        all_form = FormDAO(Connection('root', 'root', '127.0.0.1', 'schema_test')).select_all()
+        all_subject = SubjectDAO(Connection('root', 'root', '127.0.0.1', 'schema_test')).select_all()
+        all_teacher = TeacherDAO(Connection('root', 'root', '127.0.0.1', 'schema_test')).select_all()
+        all_room = RoomDAO(Connection('root', 'root', '127.0.0.1', 'schema_test')).select_all()
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT Form_number_letter, Subject_full_name, cmplxt, amount_of_rooms, " +
+                       "amount_per_week, amount_of_time_periods " +
+                       "FROM program_class")
+        result = cursor.fetchall()
+
+        for Form_number_letter, Subject_full_name, cmplxt, amount_of_rooms, amount_per_week, amount_of_time_periods in result:
+            program_class = ProgramClass()
+            program_class.grouped_amount = amount_of_time_periods
+            program_class.complexity = cmplxt
+            program_class.room_amount = amount_of_rooms
+            program_class.amount_per_week = amount_per_week
+            # cursor.execute(
+            #     "SELECT r.number, r.capacity "
+            #     "FROM schema_test.program_class_room pcr "
+            #     "JOIN schema_test.room r "
+            #     "ON r.number = pcr.room_number "
+            #     "where Program_class_Form_number_letter = '%s' "
+            #     "AND Program_class_Subject_full_name = '%s' " % (Form_number_letter, Subject_full_name))
+            cursor.execute(
+                "SELECT pcr.room_number "
+                "FROM schema_test.program_class_room pcr "
+                "where Program_class_Form_number_letter = '%s' "
+                "AND Program_class_Subject_full_name = '%s' " % (Form_number_letter, Subject_full_name))
+            room_result = cursor.fetchall()
+
+            for form in all_form:
+                if form.number_letter == Form_number_letter:
+                    program_class.form = form
+                    break
+
+            for subject in all_subject:
+                if subject.name == Subject_full_name:
+                    program_class.subject = subject
+                    break
+
+            for room_number in room_result:
+                for room in all_room:
+                    if room.number == room_number:
+                        program_class.possible_rooms.append(room)
+            if len(program_class.possible_rooms) == 0:
+                program_class.possible_rooms = all_room
+
+            cursor.execute(
+                "SELECT pct.teacher_identificator "
+                "FROM schema_test.program_class_teacher pct "
+                "where pct.Program_class_Form_number_letter = '%s' "
+                "AND pct.Program_class_Subject_full_name = '%s' "
+                % (Form_number_letter, Subject_full_name))
+            teacher_result = cursor.fetchall()
+
+            for teacher_identificator in teacher_result:
+                for teacher in all_teacher:
+                    if teacher.id == teacher_identificator[0]:
+                        program_class.teacher.append(teacher)
+            if len(program_class.teacher) == 0:
+                program_class.teacher = all_teacher
+
+            l.append(program_class)
+        return l
 
     @connection_decorator
     def select(self, id):

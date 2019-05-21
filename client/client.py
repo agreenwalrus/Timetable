@@ -26,10 +26,19 @@ class SerialTCPSocketClient(ClientInterface):
             print("Connection with ", self.ipv4_addr, ":", self.port, " is established.")
             code = rh.OK
 
+
+            def my_exception_hook(exctype, value, traceback):
+                # Print the error and traceback
+                print(exctype, value, traceback)
+                # Call the normal Exception hook after
+                sys._excepthook(exctype, value, traceback)
+                sys.exit(1)
+
+            sys._excepthook = sys.excepthook
+            # Set the exception hook to our wrapping function
+            sys.excepthook = my_exception_hook
             app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication
-            request_handler = self.request_handler_factory.get_request_handler(self.request_handler_factory.SELECT_ALL)
-            code, result = request_handler.handle_request(self.socket)
-            window = MainUi(result)  # Создаём объект класса ExampleApp
+            window = MainUi(self.socket)  # Создаём объект класса ExampleApp
             window.show()  # Показываем окно
             app.exec_()
 

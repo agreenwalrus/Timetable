@@ -23,13 +23,30 @@ class SelectAllRequestHandler(RequestHandlerInterface):
         all = TeacherDAO(con).select_all()
         result.append(all)
 
-        # con = Connection('root', 'root', '127.0.0.1', 'schema_test')
-        # all = ProgramClassDAO(con).select_all()
-        # lis = list(map(lambda obj: (obj.number_letter, obj.people_amount,
-        #                             obj.max_complexity,
-        #                             obj.class_start.description), all))
-        # title = [' ', 'Класс', 'Размер', 'Сложность', 'Начало занятий']
-        # self.draw(self.tableWidget_form, lis, title)
+        serialized = pickle.dumps(result)
+        socket.send(serialized)
+
+        return OK
+
+
+class TimetableRequestHandler(RequestHandlerInterface):
+
+    def handle_request(self, socket):
+        result = []
+
+        con = Connection('root', 'root', '127.0.0.1', 'schema_test')
+        all_workday = WorkDayDAO(con).select_all()
+        result.append(all)
+        all_time = TimePeriodDAO(con).select_all()
+        result.append(all)
+        all = SubjectDAO(con).select_all()
+        result.append(all)
+        all = RoomDAO(con).select_all()
+        result.append(all)
+        all = FormDAO(con).select_all()
+        result.append(all)
+        all = TeacherDAO(con).select_all()
+        result.append(all)
 
         serialized = pickle.dumps(result)
         socket.send(serialized)
